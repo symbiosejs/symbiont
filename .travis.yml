@@ -59,3 +59,5 @@ script:
     if [[ -n "$(npm -ps ls eslint)" ]]; then
       npm run-script lint
     fi
+after_script:
+  - npm run coverage
