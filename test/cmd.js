@@ -82,6 +82,11 @@ describe('symbiont(1)', function() {
       })
 
 
+      it('should register a second event listener', function() {
+        testPackage.registerEventListener('onRequest', () => 'request2')
+      })
+
+
       it('should have two arguments & name sould be a string', function() {
         const action = () => {
           testPackage.registerEventListener(() => 'bad')
@@ -124,8 +129,9 @@ describe('symbiont(1)', function() {
         const onRequestListeners = storage.listeners['onRequest']
 
         assert.ok(onRequestListeners instanceof Array, 'should be an array')
-        assert.strictEqual(onRequestListeners[0](), 'request', 'should have a function')
-        assert.strictEqual(onRequestListeners.length, 1, 'only one child')
+        assert.strictEqual(onRequestListeners[0](), 'request', 'should have functions')
+        assert.strictEqual(onRequestListeners[1](), 'request2', 'should have 2nd function')
+        assert.strictEqual(onRequestListeners.length, 2, 'should have two children')
       })
     })
   })
