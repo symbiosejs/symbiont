@@ -71,15 +71,20 @@ You have to register your package in *dependencies* of *package.json* in your *S
 #### Example
 
 ```js
-const Symbiont = require('symbiont'),
-  path = require('path')
-
-const resolve = (filename) => path.resolve(__dirname, 'controller', filename)
-
+const Symbiont = require('symbiont')
+const path = require('path')
 
 const myPackage = new Symbiont()
-myPackage.registerController('home', require(resolve('home.js')))
 
+const getController = (filename) => {
+  const filepath = path.resolve(__dirname, 'controller', filename)
+  const Controller = require(filepath)
+  return new Controller();
+}
+
+myPackage.registerController('home', getController('home.js'))
+
+module.exports = myPackage
 ```
 
 ### Symbiont.registerEventListener(eventName, listener)
@@ -92,11 +97,12 @@ myPackage.registerController('home', require(resolve('home.js')))
 ```js
 const Symbiont = require('symbiont')
 
-
 const myPackage = new Symbiont()
 myPackage.registerEventListener('onRequest', () => {
   console.log('new request!')
 })
+
+module.exports = myPackage
 ```
 
 ### Symbiont.on(eventName, listener)
